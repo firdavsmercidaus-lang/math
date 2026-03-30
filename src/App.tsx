@@ -46,27 +46,20 @@ export default function App() {
     { id: 'division', label: "Bo'lish", icon: Divide, color: 'bg-amber-500', desc: "Bo'lish va ulushlar" },
     { id: 'mixed', label: "Aralash", icon: Layers, color: 'bg-violet-500', desc: "Barcha amallar birgalikda" },
     { id: 'word_problems', label: "Masalalar", icon: BrainCircuit, color: 'bg-orange-500', desc: "Matnli matematik masalalar" },
-    { id: 'logic_puzzles', label: "Mantiqiy savollar", icon: BrainCircuit, color: 'bg-pink-500', desc: "Mantiqiy fikrlashni charxlovchi testlar" },
-    { id: 'custom_topic', label: "Maxsus mavzu", icon: Sparkles, color: 'bg-indigo-500', desc: "O'zingiz hohlagan mavzuda test" },
   ];
 
-  const [customTopic, setCustomTopic] = useState("");
-  const [showTopicInput, setShowTopicInput] = useState(false);
-
-  const startQuiz = async (grade: Grade, operation: Operation, topic?: string) => {
+  const startQuiz = async (grade: Grade, operation: Operation) => {
     setLoading(true);
-    const questions = await generateQuestions(grade, operation, topic);
+    const questions = await generateQuestions(grade, operation);
     setState({
       grade,
       operation,
-      topic,
       questions,
       currentQuestionIndex: 0,
       score: 0,
       isFinished: false,
     });
     setLoading(false);
-    setShowTopicInput(false);
   };
 
   const handleAnswer = (answer: string) => {
@@ -137,7 +130,7 @@ export default function App() {
               <div className="hidden sm:flex items-center gap-2 px-3 py-1.5 bg-white border border-slate-200 rounded-full shadow-sm">
                 <Target className="w-4 h-4 text-rose-500" />
                 <span className="text-xs font-bold text-slate-600">
-                  {state.operation === 'custom_topic' ? state.topic : operations.find(o => o.id === state.operation)?.label}
+                  {operations.find(o => o.id === state.operation)?.label}
                 </span>
               </div>
             </div>
@@ -234,13 +227,7 @@ export default function App() {
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: idx * 0.1 }}
                     whileHover={{ y: -8, shadow: "0 20px 25px -5px rgb(0 0 0 / 0.1)" }}
-                    onClick={() => {
-                      if (op.id === 'custom_topic') {
-                        setShowTopicInput(true);
-                      } else {
-                        startQuiz(state.grade!, op.id);
-                      }
-                    }}
+                    onClick={() => startQuiz(state.grade!, op.id)}
                     className="group relative flex flex-col p-8 bg-white border border-slate-200 rounded-[2rem] text-left transition-all overflow-hidden"
                   >
                     <div className={`absolute top-0 right-0 w-32 h-32 ${op.color} opacity-[0.03] rounded-bl-full -mr-8 -mt-8 group-hover:opacity-[0.08] transition-opacity`} />
@@ -259,49 +246,6 @@ export default function App() {
                     </div>
                   </motion.button>
                 ))}
-              </div>
-            </motion.div>
-          )}
-
-          {/* Step 2.5: Custom Topic Input */}
-          {state.grade && showTopicInput && !loading && (
-            <motion.div
-              key="topic-input"
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.95 }}
-              className="max-w-xl mx-auto space-y-8"
-            >
-              <div className="space-y-2 text-center">
-                <button 
-                  onClick={() => setShowTopicInput(false)}
-                  className="flex items-center gap-2 text-slate-400 hover:text-blue-600 font-bold text-xs uppercase tracking-widest transition-colors mb-2 mx-auto"
-                >
-                  <ArrowLeft className="w-4 h-4" /> Orqaga
-                </button>
-                <h2 className="text-3xl font-black text-slate-900 tracking-tight">Mavzuni kiriting</h2>
-                <p className="text-slate-500 font-medium">Masalan: "Kasrlar", "Geometriya", "Tenglamalar"</p>
-              </div>
-
-              <div className="bg-white p-8 rounded-[2.5rem] border border-slate-200 shadow-xl space-y-6">
-                <div className="space-y-2">
-                  <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-2">Mavzu nomi</label>
-                  <input 
-                    type="text"
-                    value={customTopic}
-                    onChange={(e) => setCustomTopic(e.target.value)}
-                    placeholder="Mavzuni shu yerga yozing..."
-                    className="w-full px-6 py-4 bg-slate-50 border border-slate-100 rounded-2xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white transition-all font-bold text-lg"
-                    autoFocus
-                  />
-                </div>
-                <button
-                  disabled={!customTopic.trim()}
-                  onClick={() => startQuiz(state.grade!, 'custom_topic', customTopic)}
-                  className="w-full py-5 bg-blue-600 text-white font-black rounded-2xl hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all shadow-lg shadow-blue-200 flex items-center justify-center gap-3"
-                >
-                  Testni yaratish <Sparkles className="w-5 h-5" />
-                </button>
               </div>
             </motion.div>
           )}

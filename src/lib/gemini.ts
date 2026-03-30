@@ -3,23 +3,12 @@ import { Grade, Operation, Question } from "../types";
 
 const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY || "" });
 
-export async function generateQuestions(grade: Grade, operation: Operation, topic?: string): Promise<Question[]> {
+export async function generateQuestions(grade: Grade, operation: Operation): Promise<Question[]> {
   const model = "gemini-3-flash-preview";
   
   let prompt = "";
   
-  if (operation === 'custom_topic' && topic) {
-    prompt = `${grade}-sinf o'quvchisi uchun "${topic}" mavzusiga oid 5 ta matematik test savoli tuzing. 
-    Har bir savol uchun 4 ta variant bo'lsin. 
-    Format JSON: [{ "id": "1", "text": "...", "options": ["...", "...", "...", "..."], "correctAnswer": "...", "explanation": "..." }]
-    Faqat JSON qaytaring.`;
-  } else if (operation === 'logic_puzzles') {
-    prompt = `${grade}-sinf o'quvchisi uchun 5 ta mantiqiy matematik savol (logic puzzles) tuzing. 
-    Bu savollar o'quvchining mantiqiy fikrlash qobiliyatini sinashi kerak.
-    Har bir savol uchun 4 ta variant (A, B, C, D) bo'lsin. 
-    Format JSON: [{ "id": "1", "text": "...", "options": ["...", "...", "...", "..."], "correctAnswer": "...", "explanation": "..." }]
-    Faqat JSON qaytaring.`;
-  } else if (operation === 'word_problems') {
+  if (operation === 'word_problems') {
     prompt = `${grade}-sinf o'quvchisi uchun 5 ta matematik masala (word problems) tuzing. 
     Har bir masala uchun 4 ta variant (A, B, C, D) bo'lsin. 
     Javoblar aniq bo'lsin. 
