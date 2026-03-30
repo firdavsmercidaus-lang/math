@@ -12,7 +12,7 @@ import {
   X,
   Divide,
   Layers,
-  BrainCircuit,
+  BookOpen,
   Loader2,
   Sparkles,
   ArrowLeft,
@@ -45,7 +45,7 @@ export default function App() {
     { id: 'multiplication', label: "Ko'paytirish", icon: X, color: 'bg-emerald-500', desc: "Ko'paytirish jadvali va amallar" },
     { id: 'division', label: "Bo'lish", icon: Divide, color: 'bg-amber-500', desc: "Bo'lish va ulushlar" },
     { id: 'mixed', label: "Aralash", icon: Layers, color: 'bg-violet-500', desc: "Barcha amallar birgalikda" },
-    { id: 'word_problems', label: "Masalalar", icon: BrainCircuit, color: 'bg-orange-500', desc: "Matnli matematik masalalar" },
+    { id: 'word_problems', label: "Masalalar", icon: BookOpen, color: 'bg-orange-500', desc: "Matnli matematik masalalar" },
   ];
 
   const startQuiz = async (grade: Grade, operation: Operation) => {
@@ -155,7 +155,7 @@ export default function App() {
                   animate={{ scale: 1 }}
                   className="inline-flex items-center gap-2 px-4 py-2 bg-blue-50 text-blue-600 rounded-full text-xs font-black uppercase tracking-widest mb-4"
                 >
-                  <Sparkles className="w-3 h-3" /> Xush kelibsiz
+                  Xush kelibsiz
                 </motion.div>
                 <h2 className="text-4xl sm:text-5xl font-black text-slate-900 tracking-tight leading-tight">
                   Matematika olamiga <br /> <span className="text-blue-600">marhamat!</span>
@@ -409,7 +409,7 @@ export default function App() {
                   transition={{ repeat: Infinity, duration: 2 }}
                   className="absolute -top-4 -right-4 bg-rose-500 text-white p-3 rounded-full shadow-lg"
                 >
-                  <Sparkles className="w-6 h-6" />
+                  <CheckCircle2 className="w-6 h-6" />
                 </motion.div>
               </div>
               
